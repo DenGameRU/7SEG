@@ -7,12 +7,12 @@ uses
   Dialogs, ExtCtrls, StdCtrls, IniFiles;
 
 type
-  // Структура для каждого сегмента
+  // РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ РєР°Р¶РґРѕРіРѕ СЃРµРіРјРµРЅС‚Р°
   TSegment = record
-    State: Boolean;     // Горит или нет
-    ClickColor: TColor; // Цвет на карте кликов
-    BitIndex: Byte;     // Индекс бита (из INI файла)
-    Name: string;       // Имя для отладки
+    State: Boolean;     // Р“РѕСЂРёС‚ РёР»Рё РЅРµС‚
+    ClickColor: TColor; // Р¦РІРµС‚ РЅР° РєР°СЂС‚Рµ РєР»РёРєРѕРІ
+    BitIndex: Byte;     // РРЅРґРµРєСЃ Р±РёС‚Р° (РёР· INI С„Р°Р№Р»Р°)
+    Name: string;       // РРјСЏ РґР»СЏ РѕС‚Р»Р°РґРєРё
   end;
 
   TForm1 = class(TForm)
@@ -21,8 +21,8 @@ type
     edtHex: TEdit;
     Memo1: TMemo;
     BtnAdd: TButton;
-    Label1: TLabel; // Защита от ошибки EClassNotFound
-    Label2: TLabel; // Защита от ошибки EClassNotFound
+    Label1: TLabel; // Р—Р°С‰РёС‚Р° РѕС‚ РѕС€РёР±РєРё EClassNotFound
+    Label2: TLabel; // Р—Р°С‰РёС‚Р° РѕС‚ РѕС€РёР±РєРё EClassNotFound
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Image1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -44,7 +44,7 @@ implementation
 
 {$R *.dfm}
 
-// Загрузка матрицы сегментов из INI-файла
+// Р—Р°РіСЂСѓР·РєР° РјР°С‚СЂРёС†С‹ СЃРµРіРјРµРЅС‚РѕРІ РёР· INI-С„Р°Р№Р»Р°
 procedure TForm1.LoadConfig;
 var
   Ini: TIniFile;
@@ -73,35 +73,35 @@ var
 begin
   Path := ExtractFilePath(ParamStr(0));
   
-  // Очищаем Memo при старте
+  // РћС‡РёС‰Р°РµРј Memo РїСЂРё СЃС‚Р°СЂС‚Рµ
   Memo1.Clear;
   
-  // Инициализируем карту кликов и загружаем её
+  // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РєР°СЂС‚Сѓ РєР»РёРєРѕРІ Рё Р·Р°РіСЂСѓР¶Р°РµРј РµС‘
   ClickMap := TBitmap.Create;
   if FileExists(Path + 'click_map.bmp') then
     ClickMap.LoadFromFile(Path + 'click_map.bmp')
   else
-    ShowMessage('Ошибка: Файл click_map.bmp не найден!');
+    ShowMessage('РћС€РёР±РєР°: Р¤Р°Р№Р» click_map.bmp РЅРµ РЅР°Р№РґРµРЅ!');
 
-  // Привязываем цвета маски к сегментам
-  Segments[0].ClickColor := RGB(0, 0, 255);     // A - Синий
+  // РџСЂРёРІСЏР·С‹РІР°РµРј С†РІРµС‚Р° РјР°СЃРєРё Рє СЃРµРіРјРµРЅС‚Р°Рј
+  Segments[0].ClickColor := RGB(0, 0, 255);     // A - РЎРёРЅРёР№
   Segments[0].Name := 'A';
-  Segments[1].ClickColor := RGB(0, 255, 0);     // B - Зелёный
+  Segments[1].ClickColor := RGB(0, 255, 0);     // B - Р—РµР»С‘РЅС‹Р№
   Segments[1].Name := 'B';
-  Segments[2].ClickColor := RGB(255, 0, 0);     // C - Красный
+  Segments[2].ClickColor := RGB(255, 0, 0);     // C - РљСЂР°СЃРЅС‹Р№
   Segments[2].Name := 'C';
-  Segments[3].ClickColor := RGB(255, 255, 0);   // D - Жёлтый
+  Segments[3].ClickColor := RGB(255, 255, 0);   // D - Р–С‘Р»С‚С‹Р№
   Segments[3].Name := 'D';
-  Segments[4].ClickColor := RGB(255, 0, 255);   // E - Фиолетовый
+  Segments[4].ClickColor := RGB(255, 0, 255);   // E - Р¤РёРѕР»РµС‚РѕРІС‹Р№
   Segments[4].Name := 'E';
-  Segments[5].ClickColor := RGB(0, 255, 255);   // F - Голубой
+  Segments[5].ClickColor := RGB(0, 255, 255);   // F - Р“РѕР»СѓР±РѕР№
   Segments[5].Name := 'F';
-  Segments[6].ClickColor := RGB(128, 128, 128); // G - Серый
+  Segments[6].ClickColor := RGB(128, 128, 128); // G - РЎРµСЂС‹Р№
   Segments[6].Name := 'G';
-  Segments[7].ClickColor := RGB(255, 128, 0);   // DP - Оранжевый
+  Segments[7].ClickColor := RGB(255, 128, 0);   // DP - РћСЂР°РЅР¶РµРІС‹Р№
   Segments[7].Name := 'DP';
 
-  // Включаем ВСЕ сегменты при старте программы
+  // Р’РєР»СЋС‡Р°РµРј Р’РЎР• СЃРµРіРјРµРЅС‚С‹ РїСЂРё СЃС‚Р°СЂС‚Рµ РїСЂРѕРіСЂР°РјРјС‹
   for i := 0 to 7 do
   begin
     Segments[i].State := True;
@@ -109,7 +109,7 @@ begin
 
   LoadConfig;
   
-  // Рисуем зажженный индикатор и считаем биты для восьмерки с точкой
+  // Р РёСЃСѓРµРј Р·Р°Р¶Р¶РµРЅРЅС‹Р№ РёРЅРґРёРєР°С‚РѕСЂ Рё СЃС‡РёС‚Р°РµРј Р±РёС‚С‹ РґР»СЏ РІРѕСЃСЊРјРµСЂРєРё СЃ С‚РѕС‡РєРѕР№
   RedrawIndicator;
   RecalculateCodes;
 end;
@@ -119,20 +119,20 @@ begin
   ClickMap.Free;
 end;
 
-// Перерисовка индикатора с диска (работает надежно)
+// РџРµСЂРµСЂРёСЃРѕРІРєР° РёРЅРґРёРєР°С‚РѕСЂР° СЃ РґРёСЃРєР° (СЂР°Р±РѕС‚Р°РµС‚ РЅР°РґРµР¶РЅРѕ)
 procedure TForm1.RedrawIndicator;
 var
   X, Y: Integer;
   TargetColor: TColor;
   i: Integer;
 begin
-  // Каждый раз перезагружаем чистый фон
+  // РљР°Р¶РґС‹Р№ СЂР°Р· РїРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј С‡РёСЃС‚С‹Р№ С„РѕРЅ
   if FileExists(ExtractFilePath(ParamStr(0)) + 'bg.bmp') then
     Image1.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'bg.bmp')
   else
     Exit;
 
-  // Сканируем картинку. Если сегмент включен, зажигаем его ярко-красным
+  // РЎРєР°РЅРёСЂСѓРµРј РєР°СЂС‚РёРЅРєСѓ. Р•СЃР»Рё СЃРµРіРјРµРЅС‚ РІРєР»СЋС‡РµРЅ, Р·Р°Р¶РёРіР°РµРј РµРіРѕ СЏСЂРєРѕ-РєСЂР°СЃРЅС‹Рј
   for Y := 0 to Image1.Height - 1 do
   begin
     for X := 0 to Image1.Width - 1 do
@@ -149,7 +149,7 @@ begin
   end;
 end;
 
-// Чистый пересчёт битов в BIN и HEX без лишних переменных
+// Р§РёСЃС‚С‹Р№ РїРµСЂРµСЃС‡С‘С‚ Р±РёС‚РѕРІ РІ BIN Рё HEX Р±РµР· Р»РёС€РЅРёС… РїРµСЂРµРјРµРЅРЅС‹С…
 procedure TForm1.RecalculateCodes;
 var
   ResultByte: Byte;
@@ -158,14 +158,14 @@ var
 begin
   ResultByte := 0;
   
-  // Собираем байт на основе состояний сегментов и их битовых индексов
+  // РЎРѕР±РёСЂР°РµРј Р±Р°Р№С‚ РЅР° РѕСЃРЅРѕРІРµ СЃРѕСЃС‚РѕСЏРЅРёР№ СЃРµРіРјРµРЅС‚РѕРІ Рё РёС… Р±РёС‚РѕРІС‹С… РёРЅРґРµРєСЃРѕРІ
   for i := 0 to 7 do
   begin
     if Segments[i].State then
       ResultByte := ResultByte or (1 shl Segments[i].BitIndex);
   end;
 
-  // Формируем красивую двоичную строку (от Бита 7 до Бита 0)
+  // Р¤РѕСЂРјРёСЂСѓРµРј РєСЂР°СЃРёРІСѓСЋ РґРІРѕРёС‡РЅСѓСЋ СЃС‚СЂРѕРєСѓ (РѕС‚ Р‘РёС‚Р° 7 РґРѕ Р‘РёС‚Р° 0)
   BinStr := '';
   for i := 7 downto 0 do
   begin
@@ -179,7 +179,7 @@ begin
   edtHex.Text := '0x' + IntToHex(ResultByte, 2);
 end;
 
-// Обработка клика по наклонным сегментам
+// РћР±СЂР°Р±РѕС‚РєР° РєР»РёРєР° РїРѕ РЅР°РєР»РѕРЅРЅС‹Рј СЃРµРіРјРµРЅС‚Р°Рј
 procedure TForm1.Image1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
@@ -192,7 +192,7 @@ begin
   begin
     if Segments[i].ClickColor = ColorUnderMouse then
     begin
-      // Инвертируем состояние сегмента
+      // РРЅРІРµСЂС‚РёСЂСѓРµРј СЃРѕСЃС‚РѕСЏРЅРёРµ СЃРµРіРјРµРЅС‚Р°
       Segments[i].State := not Segments[i].State;
       RedrawIndicator;
       RecalculateCodes;
@@ -201,7 +201,7 @@ begin
   end;
 end;
 
-// Кнопка сохранения строки в историю
+// РљРЅРѕРїРєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ СЃС‚СЂРѕРєРё РІ РёСЃС‚РѕСЂРёСЋ
 procedure TForm1.BtnAddClick(Sender: TObject);
 begin
   Memo1.Lines.Add('  ' + edtBin.Text + ', // ' + edtHex.Text);
